@@ -12,11 +12,11 @@ import android.view.View;
 
 /**
  * Created  on 2017/10/23.
- *
+ *跳动的数字
  * @author xyb
  */
 
-public class LikeView extends View {
+public class BeatNumber extends View {
     private static final String TAG = "LikeView";
     private int likeNumer = 98;
     private TextPaint originTextPaint;
@@ -31,11 +31,11 @@ public class LikeView extends View {
 
     int textY = TEXT_INIT_Y;
 
-    public LikeView(Context context) {
+    public BeatNumber(Context context) {
         super(context);
     }
 
-    public LikeView(Context context, @Nullable AttributeSet attrs) {
+    public BeatNumber(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
         originTextPaint = new TextPaint();
@@ -48,7 +48,7 @@ public class LikeView extends View {
         outTextPaint.setTextSize(34f);
     }
 
-    public LikeView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public BeatNumber(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
@@ -101,13 +101,27 @@ public class LikeView extends View {
                 int outTextColor = Color.argb((int) (255 * alpha), 0, 0, 0);
                 outTextPaint.setColor(outTextColor);
 
+                /**
+                 *
+                 textY--;
+                 if (TEXT_INIT_Y - textY < textHeight) {
+                 Log.i(TAG, "onDraw:inTextPaint intText "+ intText);
+                 Log.i(TAG, "onDraw:inTextPaint y "+ (textY + textHeight));
+                 canvas.drawText(outText, startX, textY, outTextPaint);
+                 canvas.drawText(intText, startX, textY + textHeight, inTextPaint);
+                 invalidate();
+                 } else {
+                 textY = TEXT_INIT_Y;
+                 canvas.drawText(intText, startX, textY , inTextPaint);
+                 }
+
+                 */
+                //这里有个小技巧，先drawText,再改变文字文字坐标，这样到达临界时的代码和没有到达是是一样的，不然就要像上面的注释；里的代码一样了。
                 canvas.drawText(outText, startX, textY, outTextPaint);
                 canvas.drawText(intText, startX, textY + textHeight, inTextPaint);
 
                 textY--;
                 if (TEXT_INIT_Y - textY < textHeight) {
-                    Log.i(TAG, "onDraw:inTextPaint intText " + intText);
-                    Log.i(TAG, "onDraw:inTextPaint y " + (textY + textHeight));
                     invalidate();
                 } else {
                     textY = TEXT_INIT_Y;
@@ -143,6 +157,9 @@ public class LikeView extends View {
             likeNumer++;
         } else if (status == REDUCCE) {
             likeNumer--;
+            if(likeNumer<0){//不能小于0
+                return;
+            }
         }
         invalidate();
     }

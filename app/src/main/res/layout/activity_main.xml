@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.xyb.myapplication.MainActivity">
 
-    <com.xyb.myapplication.ui.LikeView
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+    <com.xyb.myapplication.ui.BeatNumber
         android:layout_width="100dp"
         android:id="@+id/like_view"
         android:layout_height="100dp"/>
@@ -16,11 +19,33 @@
         android:text="add"
         android:onClick="add"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"/>
 
     <Button
         android:onClick="reduce"
         android:text="reduce"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+        <com.xyb.myapplication.ui.ThumbView
+            android:id="@+id/thumbview"
+            android:layout_width="40dp"
+            android:layout_height="40dp" />
+        <Button
+            android:onClick="like"
+            android:text="点赞"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:onClick="notLike"
+            android:text="取消点赞"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+
 </LinearLayout>
