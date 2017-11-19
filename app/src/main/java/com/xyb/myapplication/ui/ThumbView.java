@@ -32,7 +32,7 @@ public class ThumbView extends View{
     public final static  int THUMB=1;
     private int status=NOT_THUMB;
 
-    private final int THUMB_START_ANGLE =130;
+    private final int THUMB_START_ANGLE =90;
 
     private int mSweepedAngle=0;
 
@@ -51,6 +51,7 @@ public class ThumbView extends View{
     }
 
     private void init() {
+
         mNotThumbBitmap= BitmapFactory.decodeResource(getResources(), R.drawable.ic_messages_like_unselected);
         mThumbBitmap= BitmapFactory.decodeResource(getResources(), R.drawable.ic_messages_like_selected);
         mShinerBitmap= BitmapFactory.decodeResource(getResources(), R.drawable.ic_messages_like_selected_shining);
@@ -60,24 +61,28 @@ public class ThumbView extends View{
         mShinnerWidth=mShinerBitmap.getWidth();
         mShinnerHegiht=mShinerBitmap.getHeight();
 
-
-
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        canvas.save();
+        canvas.translate(20,0);
+
         if(status==NOT_THUMB){
             canvas.save();
             mShinnerPath=new Path();
-            mShinnerPath.addArc(new RectF(0f,0f,mShinnerWidth,mShinnerHegiht), THUMB_START_ANGLE,mSweepedAngle);
+            RectF shinnerRectF = new RectF(0f, 0f, mShinnerWidth - dpToPx(5), mShinnerHegiht + dpToPx(10));
+            mShinnerPath.addArc(shinnerRectF, THUMB_START_ANGLE,mSweepedAngle);
             canvas.clipPath(mShinnerPath);
-            canvas.drawBitmap(mShinerBitmap, 0, 0, new Paint());
+            Paint paint = new Paint();
+            paint.setStyle(Paint.Style.FILL);
+            canvas.drawBitmap(mShinerBitmap, 0, 0, paint);
             canvas.restore();
 
             canvas.drawBitmap(mNotThumbBitmap, 0 - dpToPx(2), mShinerBitmap.getHeight() - dpToPx(8), new Paint());
 
-            if(THUMB_START_ANGLE+mSweepedAngle>130){
+            if(THUMB_START_ANGLE+mSweepedAngle>100){
                 mSweepedAngle-=10;
                 invalidate();
             }
@@ -85,20 +90,23 @@ public class ThumbView extends View{
         }else if(status==THUMB) {
             canvas.save();
             mShinnerPath=new Path();
-            mShinnerPath.addArc(new RectF(0f,0f,mShinnerWidth,mShinnerHegiht), THUMB_START_ANGLE,mSweepedAngle);
+            RectF shinnerRectF = new RectF(0f, 0f, mShinnerWidth + dpToPx(2), mShinnerHegiht + dpToPx(2));
+
+            mShinnerPath.addArc(shinnerRectF, THUMB_START_ANGLE,mSweepedAngle);
             canvas.clipPath(mShinnerPath);
             canvas.drawBitmap(mShinerBitmap, 0, 0, new Paint());
             canvas.restore();
 
             canvas.drawBitmap(mThumbBitmap, 0 - dpToPx(2), mShinerBitmap.getHeight() - dpToPx(8), new Paint());
 
-            if(THUMB_START_ANGLE +mSweepedAngle<360) {
+            if(THUMB_START_ANGLE +mSweepedAngle<=360) {
                 mSweepedAngle+=10;
                 invalidate();
             }
 
 
         }
+        canvas.restore();
     }
 
     private int dpToPx(int dp){
