@@ -77,21 +77,31 @@ public class ThumbView extends View{
         canvas.save();
         canvas.translate(20,0);
 
+        float progress = (mSweepedAngle * 1f) / SWEEP_MAX;
         if(status==NOT_THUMB){
             canvas.save();
             mShinnerPath=new Path();
-            RectF shinnerRectF = new RectF(0f, 0f, mShinnerWidth - dpToPx(5), mShinnerHegiht + dpToPx(10));
-            mShinnerPath.addArc(shinnerRectF, THUMB_START_ANGLE,mSweepedAngle);
-            canvas.clipPath(mShinnerPath);
             Paint paint = new Paint();
-            int alpha = (int) ((mSweepedAngle * 1f) / SWEEP_MAX * 255);
+            int alpha = (int) (progress * 255);
             Log.i(TAG, "mSweepedAngle:"+mSweepedAngle);
             Log.i(TAG, "alpha:"+alpha);
             paint.setAlpha(Math.max(alpha,0));//alpha不小于0
             canvas.drawBitmap(mShinerBitmap, 0, 0, paint);
             canvas.restore();
 
+            //绘制拇指图片
+            canvas.save();
+            float scale;
+            if(progress<0.5f){
+                scale=1-progress;
+            }else{
+                scale=progress;
+            }
+            canvas.scale(scale,scale,mNotThumbBitmap.getWidth()/2,mNotThumbBitmap.getHeight()/2);
             canvas.drawBitmap(mNotThumbBitmap, 0 - dpToPx(2), mShinerBitmap.getHeight() - dpToPx(8), new Paint());
+            canvas.restore();
+
+
 
             if(mSweepedAngle>SWEEP_MIN){
                 mSweepedAngle-=10;
@@ -100,20 +110,33 @@ public class ThumbView extends View{
 
         }else if(status==THUMB) {
             canvas.save();
+
             mShinnerPath=new Path();
             RectF shinnerRectF = new RectF(0f, 0f, mShinnerWidth + dpToPx(2), mShinnerHegiht + dpToPx(10));
 
             mShinnerPath.addArc(shinnerRectF, THUMB_START_ANGLE,mSweepedAngle);
             canvas.clipPath(mShinnerPath);
             Paint paint = new Paint();
-            int alpha = (int) ((mSweepedAngle * 1f) / SWEEP_MAX * 255);
+            int alpha = (int) (progress * 255);
             Log.i(TAG, "mSweepedAngle:"+mSweepedAngle);
             Log.i(TAG, "alpha:"+alpha);
             paint.setAlpha(Math.min(alpha,255));//alpha不能超过255
             canvas.drawBitmap(mShinerBitmap, 0, 0, paint);
+
             canvas.restore();
 
+            //绘制拇指图片
+            canvas.save();
+
+            float scale;
+            if(progress<0.5f){
+                scale=1-progress;
+            }else{
+                scale=progress;
+            }
+            canvas.scale(scale,scale,mShinerBitmap.getWidth()/2,mShinerBitmap.getHeight()/2);
             canvas.drawBitmap(mThumbBitmap, 0 - dpToPx(2), mShinerBitmap.getHeight() - dpToPx(8), new Paint());
+            canvas.restore();
 
             if(mSweepedAngle<SWEEP_MAX) {
                 mSweepedAngle+=10;
