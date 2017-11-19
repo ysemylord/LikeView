@@ -15,9 +15,6 @@ import android.view.View;
 
 import com.xyb.myapplication.R;
 
-import static android.R.attr.max;
-import static android.content.ContentValues.TAG;
-
 /**
  * Created by xuyabo on 2017/10/28.
  */
@@ -28,8 +25,7 @@ public class ThumbView extends View{
     private Bitmap mNotThumbBitmap;
     private Bitmap mShinerBitmap;
 
-    private int mThumbWidth;
-    private int mThumbHegiht;
+
     private int mShinnerWidth;
     private int mShinnerHegiht;
 
@@ -37,12 +33,12 @@ public class ThumbView extends View{
     public final static  int THUMB=1;
     private int status=NOT_THUMB;
 
-    private final int THUMB_START_ANGLE =130;
+    private final int THUMB_START_ANGLE =130;//
     private final int THUMB_FINAL_ANGLE =360;
     private final int SWEEP_MAX =THUMB_FINAL_ANGLE-THUMB_START_ANGLE;
     private final int SWEEP_MIN =0;
 
-    private int mSweepedAngle=0;
+    private int mNowSweepedAngle =0;
 
     private Path mShinnerPath;
     public ThumbView(Context context) {
@@ -64,10 +60,11 @@ public class ThumbView extends View{
         mThumbBitmap= BitmapFactory.decodeResource(getResources(), R.drawable.ic_messages_like_selected);
         mShinerBitmap= BitmapFactory.decodeResource(getResources(), R.drawable.ic_messages_like_selected_shining);
 
-        mThumbWidth=mThumbBitmap.getWidth();
-        mThumbHegiht=mThumbBitmap.getHeight();
         mShinnerWidth=mShinerBitmap.getWidth();
         mShinnerHegiht=mShinerBitmap.getHeight();
+
+        mShinnerPath=new Path();
+
 
     }
 
@@ -77,14 +74,15 @@ public class ThumbView extends View{
         canvas.save();
         canvas.translate(20,0);
 
-        float progress = (mSweepedAngle * 1f) / SWEEP_MAX;
+        float progress = (mNowSweepedAngle * 1f) / SWEEP_MAX;
+        int thumbLeftPosition = 0 - dpToPx(2);//拇指图片左上角开始绘制的坐标
+        int thumTopPosition = mShinerBitmap.getHeight() - dpToPx(8);//拇指图片右上角开始绘制的坐标
         if(status==NOT_THUMB){
             canvas.save();
-            mShinnerPath=new Path();
+
+            //绘制光圈
             Paint paint = new Paint();
             int alpha = (int) (progress * 255);
-            Log.i(TAG, "mSweepedAngle:"+mSweepedAngle);
-            Log.i(TAG, "alpha:"+alpha);
             paint.setAlpha(Math.max(alpha,0));//alpha不小于0
             canvas.drawBitmap(mShinerBitmap, 0, 0, paint);
             canvas.restore();
@@ -98,28 +96,26 @@ public class ThumbView extends View{
                 scale=progress;
             }
             canvas.scale(scale,scale,mNotThumbBitmap.getWidth()/2,mNotThumbBitmap.getHeight()/2);
-            canvas.drawBitmap(mNotThumbBitmap, 0 - dpToPx(2), mShinerBitmap.getHeight() - dpToPx(8), new Paint());
+            canvas.drawBitmap(mNotThumbBitmap, thumbLeftPosition, thumTopPosition, new Paint());
             canvas.restore();
 
 
 
-            if(mSweepedAngle>SWEEP_MIN){
-                mSweepedAngle-=10;
+            if(mNowSweepedAngle >SWEEP_MIN){
+                mNowSweepedAngle -=10;
                 invalidate();
             }
 
         }else if(status==THUMB) {
             canvas.save();
 
-            mShinnerPath=new Path();
             RectF shinnerRectF = new RectF(0f, 0f, mShinnerWidth + dpToPx(2), mShinnerHegiht + dpToPx(10));
-
-            mShinnerPath.addArc(shinnerRectF, THUMB_START_ANGLE,mSweepedAngle);
+            mShinnerPath.addArc(shinnerRectF, THUMB_START_ANGLE, mNowSweepedAngle);
             canvas.clipPath(mShinnerPath);
+
             Paint paint = new Paint();
             int alpha = (int) (progress * 255);
-            Log.i(TAG, "mSweepedAngle:"+mSweepedAngle);
-            Log.i(TAG, "alpha:"+alpha);
+
             paint.setAlpha(Math.min(alpha,255));//alpha不能超过255
             canvas.drawBitmap(mShinerBitmap, 0, 0, paint);
 
@@ -127,7 +123,6 @@ public class ThumbView extends View{
 
             //绘制拇指图片
             canvas.save();
-
             float scale;
             if(progress<0.5f){
                 scale=1-progress;
@@ -135,11 +130,11 @@ public class ThumbView extends View{
                 scale=progress;
             }
             canvas.scale(scale,scale,mShinerBitmap.getWidth()/2,mShinerBitmap.getHeight()/2);
-            canvas.drawBitmap(mThumbBitmap, 0 - dpToPx(2), mShinerBitmap.getHeight() - dpToPx(8), new Paint());
+            canvas.drawBitmap(mThumbBitmap, thumbLeftPosition, thumTopPosition, new Paint());
             canvas.restore();
 
-            if(mSweepedAngle<SWEEP_MAX) {
-                mSweepedAngle+=10;
+            if(mNowSweepedAngle <SWEEP_MAX) {
+                mNowSweepedAngle +=10;
                 invalidate();
             }
 
