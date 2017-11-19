@@ -40,18 +40,31 @@ public class BeatNumber extends View {
 
         originTextPaint = new TextPaint();
         originTextPaint.setTextSize(34f);
+        originTextPaint.setAntiAlias(true);
 
         inTextPaint = new TextPaint();
         inTextPaint.setTextSize(34f);
+        inTextPaint.setAntiAlias(true);
+
 
         outTextPaint = new TextPaint();
         outTextPaint.setTextSize(34f);
+        outTextPaint.setAntiAlias(true);
     }
 
     public BeatNumber(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        String numString = likeNumer + "";
+        Rect bound=new Rect();
+        inTextPaint.getTextBounds(numString,0,numString.length(),bound);
+        setMeasuredDimension((int) inTextPaint.measureText(numString),bound.height()+TEXT_INIT_Y);
+
+    }
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -80,6 +93,8 @@ public class BeatNumber extends View {
                     break;
                 }
             }
+
+
 
 
             //先画出没有改变的文字
@@ -121,7 +136,7 @@ public class BeatNumber extends View {
                 canvas.drawText(intText, startX, textY + textHeight, inTextPaint);
 
                 textY--;
-                if (TEXT_INIT_Y - textY < textHeight) {
+                if (TEXT_INIT_Y - textY <=textHeight) {
                     invalidate();
                 } else {
                     textY = TEXT_INIT_Y;
@@ -139,7 +154,7 @@ public class BeatNumber extends View {
                 canvas.drawText(intText, startX, textY - textHeight, inTextPaint);
 
                 textY++;
-                if (textY - TEXT_INIT_Y < textHeight) {
+                if (textY - TEXT_INIT_Y <=textHeight) {
                     invalidate();
                 } else {
                     textY = TEXT_INIT_Y;
@@ -148,10 +163,12 @@ public class BeatNumber extends View {
 
             }
 
+
         }
     }
 
     public void setStatus(int status) {
+        String lastNumStr=likeNumer+"";
         this.status = status;
         if (status == ADD) {
             likeNumer++;
@@ -160,6 +177,10 @@ public class BeatNumber extends View {
             if(likeNumer<0){//不能小于0
                 return;
             }
+        }
+        String likeNumStr=likeNumer+"";
+        if(lastNumStr.length()!=likeNumStr.length()){
+            requestLayout();//重新测量
         }
         invalidate();
     }
