@@ -16,6 +16,7 @@ import com.xyb.myapplication.R;
 
 /**
  * Created by xuyabo on 2017/10/28.
+ * 拇指效果
  */
 
 public class ThumbView extends View {

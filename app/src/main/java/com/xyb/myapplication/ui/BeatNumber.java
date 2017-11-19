@@ -32,7 +32,7 @@ public class BeatNumber extends View {
     int textY = TEXT_INIT_Y;
 
     public BeatNumber(Context context) {
-        super(context);
+        this(context,null);
     }
 
     public BeatNumber(Context context, @Nullable AttributeSet attrs) {
@@ -185,5 +185,8 @@ public class BeatNumber extends View {
         invalidate();
     }
 
-
+    public void setLikeNumer(int likeNumer) {
+        this.likeNumer = likeNumer;
+        setStatus(NORMAL);
+    }
 }
