@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BeatNumber">
+        <attr name="number_text_size" format="dimension"></attr>
+    </declare-styleable>
+</resources>
