@@ -29,10 +29,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void like(View view) {
-        mThumbView.setStutas(ThumbView.THUMB);
+        mThumbView.setStutas(ThumbView.TO_THUMB);
     }
 
     public void notLike(View view) {
-        mThumbView.setStutas(ThumbView.NOT_THUMB);
+        mThumbView.setStutas(ThumbView.TO_NOT_THUMB);
     }
 }

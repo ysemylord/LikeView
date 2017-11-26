@@ -30,7 +30,7 @@ public class BeatNumber extends View {
     public final static int REDUCCE = 2;
 
     private int TEXT_INIT_Y;//数字绘制时的基线位置（http://hencoder.com/ui-1-3/）
-    private int textYOffset=0;//数字变化时的基线位置
+    private int textYOffset = 0;//数字变化时的基线位置
 
     private float textSize = 20f;
 
@@ -40,8 +40,9 @@ public class BeatNumber extends View {
 
     public BeatNumber(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BeatNumber,0,0);
-        textSize=typedArray.getDimension(R.styleable.BeatNumber_number_text_size,38f);
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.BeatNumber, 0, 0);
+        textSize = typedArray.getDimension(R.styleable.BeatNumber_number_text_size, 38f);
+        likeNumer=typedArray.getInt(R.styleable.BeatNumber_number,98);
         typedArray.recycle();
         originTextPaint = new TextPaint();
         originTextPaint.setTextSize(textSize);
@@ -55,6 +56,8 @@ public class BeatNumber extends View {
         outTextPaint = new TextPaint();
         outTextPaint.setTextSize(textSize);
         outTextPaint.setAntiAlias(true);
+
+
     }
 
     public BeatNumber(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
@@ -69,9 +72,9 @@ public class BeatNumber extends View {
         inTextPaint.getTextBounds(numString, 0, numString.length(), bound);
         //BeatNumber的宽度为文字的宽度（包含左右两边的空隙），高度为文字高度（不包含上下的空隙）+文字的起始坐标TEXT_INIT_Y
 
-        int viewHeight=bound.height()*3;
-        setMeasuredDimension((int) inTextPaint.measureText(numString),viewHeight );
-        TEXT_INIT_Y=bound.height()*2;
+        int viewHeight = bound.height() * 3;
+        setMeasuredDimension((int) inTextPaint.measureText(numString), viewHeight);
+        TEXT_INIT_Y = bound.height() * 2;
     }
 
     @Override
@@ -118,10 +121,10 @@ public class BeatNumber extends View {
             int textHeight = rect.height();
 
             if (status == ADD) {
-                float degress = Math.abs(textYOffset) /(textHeight*1f);//偏移的完成度
-                int alphaInt = (int) ((1-degress) * 255);//完成度越高，透明度越高，透明值越低
+                float degress = Math.abs(textYOffset) / (textHeight * 1f);//偏移的完成度
+                int alphaInt = (int) ((1 - degress) * 255);//完成度越高，透明度越高，透明值越低
                 outTextPaint.setAlpha(alphaInt);
-                Log.i(TAG, "onDraw: alpah "+alphaInt);
+                Log.i(TAG, "onDraw: alpah " + alphaInt);
 
                 /**
                  *
@@ -139,8 +142,8 @@ public class BeatNumber extends View {
 
                  */
                 //这里有个小技巧，先drawText,再改变文字文字坐标，这样到达临界时的代码和没有到达是是一样的，不然就要像上面的注释；里的代码一样了。
-                canvas.drawText(outText, startX, TEXT_INIT_Y+textYOffset, outTextPaint);
-                canvas.drawText(intText, startX, TEXT_INIT_Y+ textHeight+textYOffset, inTextPaint);
+                canvas.drawText(outText, startX, TEXT_INIT_Y + textYOffset, outTextPaint);
+                canvas.drawText(intText, startX, TEXT_INIT_Y + textHeight + textYOffset, inTextPaint);
 
                 textYOffset--;
                 if (Math.abs(textYOffset) <= textHeight) {
@@ -153,12 +156,12 @@ public class BeatNumber extends View {
 
             } else if (status == REDUCCE) {
 
-                float degress = Math.abs(textYOffset) /(textHeight*1f);//偏移的完成度
-                int alphaInt = (int) ((1-degress) * 255);//完成度越高，透明度越高，透明值越小
+                float degress = Math.abs(textYOffset) / (textHeight * 1f);//偏移的完成度
+                int alphaInt = (int) ((1 - degress) * 255);//完成度越高，透明度越高，透明值越小
                 outTextPaint.setAlpha(alphaInt);
 
-                canvas.drawText(outText, startX, TEXT_INIT_Y+textYOffset, outTextPaint);
-                canvas.drawText(intText, startX, TEXT_INIT_Y-textHeight+textYOffset, inTextPaint);
+                canvas.drawText(outText, startX, TEXT_INIT_Y + textYOffset, outTextPaint);
+                canvas.drawText(intText, startX, TEXT_INIT_Y - textHeight + textYOffset, inTextPaint);
 
                 textYOffset++;
                 if (Math.abs(textYOffset) <= textHeight) {
@@ -175,7 +178,10 @@ public class BeatNumber extends View {
     }
 
     public void setStatus(int status) {
-        String lastNumStr = likeNumer + "";
+
+        if(likeNumer==0&&status==REDUCCE){
+            return;
+        }
         this.status = status;
         if (status == ADD) {
             likeNumer++;
@@ -185,15 +191,17 @@ public class BeatNumber extends View {
                 return;
             }
         }
-        String likeNumStr = likeNumer + "";
-        if (lastNumStr.length() != likeNumStr.length()) {
-            requestLayout();//重新测量
-        }
+
+        requestLayout();
         invalidate();
     }
 
     public void setLikeNumer(int likeNumer) {
         this.likeNumer = likeNumer;
         setStatus(NORMAL);
+    }
+
+    public void setTextSize(int textSize) {
+        this.textSize = textSize;
     }
 }

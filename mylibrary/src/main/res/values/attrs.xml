@@ -2,5 +2,23 @@
 <resources>
     <declare-styleable name="BeatNumber">
         <attr name="number_text_size" format="dimension"></attr>
+        <attr name="number" format="integer"></attr>
+    </declare-styleable>
+
+    <declare-styleable name="ThumbView">
+        <attr name="status">
+            <enum name="not_thumb" value="0" />
+            <enum name="thumb" value="1" />
+
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="LikeView">
+        <attr name="l_number_text_size" format="dimension"></attr>
+        <attr name="l_status">
+            <enum name="not_thumb" value="0" />
+            <enum name="thumb" value="1" />
+        </attr>
+        <attr name="l_number" format="integer"></attr>
     </declare-styleable>
 </resources>

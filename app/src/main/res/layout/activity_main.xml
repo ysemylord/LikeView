@@ -12,6 +12,7 @@
         android:orientation="vertical">
 
         <com.xyb.like.BeatNumber
+            app:number="3"
             app:number_text_size="12sp"
             android:id="@+id/like_view"
             android:layout_width="wrap_content"
@@ -37,6 +38,7 @@
 
         <com.xyb.like.ThumbView
             android:id="@+id/thumbview"
+            app:status="thumb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="5dp" />
@@ -55,6 +57,7 @@
     </LinearLayout>
 
     <com.xyb.like.LikeView
+        app:l_number="2"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:layout_width="wrap_content"
