@@ -19,7 +19,7 @@ xml
 ```
 ## 属性  
 |**属性名称**|**意义**|**类型**|
-|--|--|:--:|:--:|
+|--|--|--|
 |l_number_text_size      | 文字大小     | float|
 |l_status      | 尺子的最大刻度值     | enum(not_thumb,thumb)|
 |l_number | 点赞数量     | int| 
