@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.xyb.myapplication.MainActivity">
 
     <LinearLayout
@@ -11,7 +11,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.xyb.myapplication.ui.BeatNumber
+        <com.xyb.like.BeatNumber
+            app:number_text_size="12sp"
             android:id="@+id/like_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -34,7 +35,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.xyb.myapplication.ui.ThumbView
+        <com.xyb.like.ThumbView
             android:id="@+id/thumbview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -53,10 +54,10 @@
             android:text="取消点赞" />
     </LinearLayout>
 
-    <com.xyb.myapplication.ui.LikeView
+    <com.xyb.like.LikeView
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"></com.xyb.myapplication.ui.LikeView>
+        android:layout_height="wrap_content"></com.xyb.like.LikeView>
 
 </LinearLayout>

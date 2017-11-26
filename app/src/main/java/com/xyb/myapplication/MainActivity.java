@@ -1,11 +1,12 @@
 package com.xyb.myapplication;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.xyb.myapplication.ui.BeatNumber;
-import com.xyb.myapplication.ui.ThumbView;
+import com.xyb.like.BeatNumber;
+import com.xyb.like.ThumbView;
+
 
 public class MainActivity extends AppCompatActivity {
     ThumbView mThumbView;
