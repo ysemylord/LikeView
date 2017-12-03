@@ -3,7 +3,7 @@
 实现细节见[博客](http://www.jianshu.com/c/10a071fbfb65)
 
 ## 效果图
-![image](https://github.com/ysemylord/LikeView/blob/master/SVID_20171126_182921.mp4)
+![image](https://github.com/ysemylord/LikeView/blob/master/ezgif.com-video-to-gif.gif)
 
 ## 使用方法
 xml
